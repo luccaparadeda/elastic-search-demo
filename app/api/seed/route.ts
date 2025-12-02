@@ -12,14 +12,25 @@ export async function POST() {
     const indexExists = await client.indices.exists({ index: indexName });
 
     if (indexExists) {
+      const countResponse = await client.count({ index: indexName });
+      const documentCount = countResponse.count;
+
+      if (documentCount > 0) {
+        return NextResponse.json({
+          success: false,
+          message: `Index already contains ${documentCount} documents. Delete the index first if you want to re-seed.`,
+          count: documentCount,
+        });
+      }
+
       await client.indices.delete({ index: indexName });
       console.log(`Deleted existing index: ${indexName}`);
     }
 
     await client.indices.create({
       index: indexName,
-      body: PRODUCT_INDEX_MAPPING,
-    });
+      ...PRODUCT_INDEX_MAPPING,
+    } as any);
     console.log(`Created index: ${indexName}`);
 
     const products = generateSeedData(150);
@@ -30,7 +41,7 @@ export async function POST() {
     ]);
 
     const bulkResponse = await client.bulk({
-      body: bulkBody,
+      operations: bulkBody,
       refresh: 'wait_for',
     });
 

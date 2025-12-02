@@ -58,7 +58,7 @@ function generateProduct(index: number): Product {
   const isElectronics = categoryName === 'Electronics';
 
   const templates = (productTemplates as any)[categoryName]?.[subcategoryName] || [];
-  const template = templates.length > 0
+  const template: { prefix: string; suffix: string; features: string[] } = templates.length > 0
     ? faker.helpers.arrayElement(templates)
     : { prefix: '', suffix: subcategoryName, features: [] };
 
