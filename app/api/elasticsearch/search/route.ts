@@ -27,15 +27,13 @@ export async function POST(request: NextRequest) {
 
     const response = await client.search({
       index: indexName,
-      body: {
-        query: searchQuery,
-        aggs: aggregations,
-        highlight,
-        sort: sortConfig,
-        from,
-        size: pageSize,
-        track_total_hits: true,
-      },
+      query: searchQuery,
+      aggs: aggregations,
+      highlight,
+      sort: sortConfig,
+      from,
+      size: pageSize,
+      track_total_hits: true,
     });
 
     const hits: ProductWithHighlight[] = response.hits.hits.map((hit: any) => {

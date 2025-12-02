@@ -10,21 +10,19 @@ export async function GET() {
 
     const response = await client.search({
       index: indexName,
-      body: {
-        size: 0,
-        aggs: {
-          categories: {
-            terms: { field: 'category', size: 50 },
-          },
-          brands: {
-            terms: { field: 'brand', size: 100 },
-          },
-          tags: {
-            terms: { field: 'tags', size: 50 },
-          },
-          price_stats: {
-            stats: { field: 'price' },
-          },
+      size: 0,
+      aggs: {
+        categories: {
+          terms: { field: 'category', size: 50 },
+        },
+        brands: {
+          terms: { field: 'brand', size: 100 },
+        },
+        tags: {
+          terms: { field: 'tags', size: 50 },
+        },
+        price_stats: {
+          stats: { field: 'price' },
         },
       },
     });

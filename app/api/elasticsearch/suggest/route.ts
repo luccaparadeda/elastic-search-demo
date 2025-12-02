@@ -24,11 +24,9 @@ export async function GET(request: NextRequest) {
 
     const response = await client.search({
       index: indexName,
-      body: {
-        query: autocompleteQuery,
-        size: 5,
-        _source: ['id', 'name', 'price', 'imageUrl', 'rating', 'brand'],
-      },
+      query: autocompleteQuery,
+      size: 5,
+      _source: ['id', 'name', 'price', 'imageUrl', 'rating', 'brand'],
     });
 
     const products: Product[] = response.hits.hits.map((hit: any) => hit._source);
